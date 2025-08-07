@@ -1,5 +1,6 @@
 from datetime import datetime, timedelta
 import pandas as pd
+import os
 from flask import Flask,request,render_template
 from app.fetch_data import fetch_data, get_available_csv_files, get_available_timeframes
 from app.preprocess_data import preprocess_data
@@ -16,12 +17,26 @@ from app.pattern_scanner import scan_all_patterns
 
 app=Flask(__name__)
 
+from flask import send_from_directory
+
+@app.route('/favicon.ico')
+def favicon():
+    return send_from_directory(os.path.join(app.root_path, 'static'),
+                               'favicon.ico', mimetype='image/vnd.microsoft.icon')
+
+# @app.route('/.well-known/appspecific/com.chrome.devtools.json')
+# def chrome_devtools_probe():
+#     return '', 204
+
+
 @app.route("/", methods=["GET", "POST"])
 def index():
     # Get available CSV files, timeframes and patterns for the dropdowns
     csv_files = get_available_csv_files()
     timeframes = get_available_timeframes()
     patterns = get_available_patterns()
+
+    
     
     if request.method == "POST":
         csv_file = request.form.get("csv_file")
@@ -53,19 +68,25 @@ def index():
 
         # If action is "show_table", just show the data table
         if action == "show_table":
-            # Prepare table data (limit to first 100 rows for display)
             table_data = df.head(100).to_dict('records')
+
+            if request.headers.get("X-Requested-With") == "XMLHttpRequest":
+        # This is an AJAX request; return just the table HTML
+                return render_template("partials/data_table.html", table_data=table_data, total_rows=len(df))
+
             return render_template("index.html", 
-                                 csv_files=csv_files, 
-                                 timeframes=timeframes,
-                                 patterns=patterns,
-                                 table_data=table_data,
-                                 selected_csv=csv_file,
-                                 selected_timeframe=timeframe,
-                                 selected_start_date=start_date,
-                                 selected_end_date=end_date,
-                                 selected_pattern=selected_pattern,
-                                 total_rows=len(df))
+                csv_files=csv_files, 
+                timeframes=timeframes,
+                patterns=patterns,
+                table_data=table_data,
+                selected_csv=csv_file,
+                selected_timeframe=timeframe,
+                selected_start_date=start_date,
+                selected_end_date=end_date,
+                selected_pattern=selected_pattern,
+                total_rows=len(df),
+                error=None)
+
 
         # If action is "analyze", perform pattern analysis and show chart
         if action == "analyze":

@@ -1,0 +1,26 @@
+<!-- templates/partials/data_table.html -->
+<div id="table-container">
+    {% if table_data %}
+    <p><strong>Total Rows:</strong> {{ total_rows }}</p>
+    <table class="table table-bordered table-striped table-sm">
+        <thead>
+            <tr>
+                {% for key in table_data[0].keys() %}
+                    <th>{{ key }}</th>
+                {% endfor %}
+            </tr>
+        </thead>
+        <tbody>
+            {% for row in table_data %}
+                <tr>
+                    {% for value in row.values() %}
+                        <td>{{ value }}</td>
+                    {% endfor %}
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    {% else %}
+        <p>No data to display.</p>
+    {% endif %}
+</div>
