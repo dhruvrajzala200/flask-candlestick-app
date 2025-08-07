@@ -1,7 +1,12 @@
 services:
   - type: web
-    name: flask-app
+    name: your-app
     env: python
-    buildCommand: "pip install -r requirements.txt"
-    startCommand: "gunicorn app.routes:app"
-    plan: free
+    runtime: python-3.12.7
+    buildCommand: pip install --upgrade pip && pip install -r requirements.txt --only-binary=all
+    startCommand: # your start command here
+    envVars:
+      - key: PIP_ONLY_BINARY
+        value: ":all:"
+      - key: PIP_NO_BUILD_ISOLATION
+        value: "false"
