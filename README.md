@@ -42,16 +42,16 @@ This project is a web-based tool for detecting and visualizing candlestick patte
   Focused on research, development, and testing.
 
 - **Dhruvrajsinh Zala**  
-  Possesses strong knowledge of trading and contributed as a frontend designer.
+  Possesses strong knowledge of trading and contributed as a frontend designer and implement logic of patterns.
 
 - **Vishal Baraiya** (Team Leader)  
-  Led the backend development, managed code merging and bug fixing, and effectively utilized AI tools.
+  Led the backend development, managed code and effectively utilized AI tool.
   
 ## Getting Started
 
 1. Clone this repository:
    ```bash
-   git clone https://github.com/mr-baraiya/Candle-stick-pattern-recognition-tool.git
+   git clone https://github.com/dhruvrajzala200/flask-candlestick-app.git
    cd Candle-stick-pattern-recognition-tool
    ```
 2. Install dependencies (recommend using a virtual environment):
